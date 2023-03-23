@@ -8,20 +8,27 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpHeight = 20f;
+    [SerializeField] float climbSpeed = 8f;
     Rigidbody2D myRidgidbody;
     Vector2 moveInput;
     Animator myAnimator;
+    CapsuleCollider2D myCapsuleCollider2D;
+    float gravityScaleAtStart;
+
     void Start()
     {
         myRidgidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
+        myCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        gravityScaleAtStart = myRidgidbody.gravityScale;
     }
 
 
     void Update()
     {
-        Run();
         FlipSprite();
+        Run();
+        ClimbLadder();
     }
 
     void OnMove(InputValue value)
@@ -41,10 +48,32 @@ public class PlayerMovement : MonoBehaviour
 
     void OnJump(InputValue value)
     {
+        if (!myCapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        {
+            return;
+        }
         if (value.isPressed)
         {
             myRidgidbody.velocity += new Vector2(0f, jumpHeight);
         }
+    }
+
+    void ClimbLadder()
+    {
+        if (!myCapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        {
+            myRidgidbody.gravityScale = gravityScaleAtStart;
+            myAnimator.SetBool("isClimbing", false);
+            return;
+        }
+
+        Vector2 climbVelocity = new Vector2(myRidgidbody.velocity.x, moveInput.y * climbSpeed);
+        myRidgidbody.velocity = climbVelocity;
+        myRidgidbody.gravityScale = 0f;
+
+        // I didnt like how this looked
+        // bool playerHasVerticalSpeed = Mathf.Abs(myRidgidbody.velocity.y) > Mathf.Epsilon;
+        myAnimator.SetBool("isClimbing", true);
     }
 
     void FlipSprite()
