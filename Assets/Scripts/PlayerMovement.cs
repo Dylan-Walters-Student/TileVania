@@ -9,18 +9,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpHeight = 20f;
     [SerializeField] float climbSpeed = 8f;
-    Rigidbody2D myRidgidbody;
+    Rigidbody2D myRigidbody;
     Vector2 moveInput;
     Animator myAnimator;
-    CapsuleCollider2D myCapsuleCollider2D;
+    CapsuleCollider2D myBodyCollider2D;
+    BoxCollider2D myFeetCollider2D;
     float gravityScaleAtStart;
 
     void Start()
     {
-        myRidgidbody = GetComponent<Rigidbody2D>();
+        myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        myCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
-        gravityScaleAtStart = myRidgidbody.gravityScale;
+        myBodyCollider2D = GetComponent<CapsuleCollider2D>();
+        myFeetCollider2D = GetComponent<BoxCollider2D>();
+        gravityScaleAtStart = myRigidbody.gravityScale;
     }
 
 
@@ -38,38 +40,38 @@ public class PlayerMovement : MonoBehaviour
 
     void Run()
     {
-        Vector2 playerVelocity = new Vector2(moveInput.x * runSpeed, myRidgidbody.velocity.y);
-        myRidgidbody.velocity = playerVelocity;
+        Vector2 playerVelocity = new Vector2(moveInput.x * runSpeed, myRigidbody.velocity.y);
+        myRigidbody.velocity = playerVelocity;
 
-        bool playerHasHorizontalSpeed = Mathf.Abs(myRidgidbody.velocity.x) > Mathf.Epsilon;
+        bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
 
     }
 
     void OnJump(InputValue value)
     {
-        if (!myCapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (!myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             return;
         }
         if (value.isPressed)
         {
-            myRidgidbody.velocity += new Vector2(0f, jumpHeight);
+            myRigidbody.velocity += new Vector2(0f, jumpHeight);
         }
     }
 
     void ClimbLadder()
     {
-        if (!myCapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (!myFeetCollider2D.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
-            myRidgidbody.gravityScale = gravityScaleAtStart;
+            myRigidbody.gravityScale = gravityScaleAtStart;
             myAnimator.SetBool("isClimbing", false);
             return;
         }
 
-        Vector2 climbVelocity = new Vector2(myRidgidbody.velocity.x, moveInput.y * climbSpeed);
-        myRidgidbody.velocity = climbVelocity;
-        myRidgidbody.gravityScale = 0f;
+        Vector2 climbVelocity = new Vector2(myRigidbody.velocity.x, moveInput.y * climbSpeed);
+        myRigidbody.velocity = climbVelocity;
+        myRigidbody.gravityScale = 0f;
 
         // I didnt like how this looked
         // bool playerHasVerticalSpeed = Mathf.Abs(myRidgidbody.velocity.y) > Mathf.Epsilon;
@@ -78,12 +80,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FlipSprite()
     {
-        bool playerHasHorizontalSpeed = Mathf.Abs(myRidgidbody.velocity.x) > Mathf.Epsilon;
+        bool playerHasHorizontalSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
 
         if (playerHasHorizontalSpeed)
         {
-            transform.localScale = new Vector2(Mathf.Sign(myRidgidbody.velocity.x), 1f);
+            transform.localScale = new Vector2(Mathf.Sign(myRigidbody.velocity.x), 1f);
         }
-
     }
 }
