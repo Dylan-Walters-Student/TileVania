@@ -33,6 +33,7 @@ public class GameSession : MonoBehaviour
     public void AddToScore(int points)
     {
         playerScore += points;
+        scoreText.text = playerScore.ToString();
     }
     public void ProcessPlayerDeath()
     {

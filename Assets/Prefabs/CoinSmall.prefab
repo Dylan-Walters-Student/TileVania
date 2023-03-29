@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3457122907275767261}
   - component: {fileID: 4749492039490440617}
   m_Layer: 14
-  m_Name: Coin
+  m_Name: CoinSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8275276388426559986
 SpriteRenderer:
