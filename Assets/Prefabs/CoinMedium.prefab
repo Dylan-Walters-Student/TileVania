@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2872573661611684796, guid: 9376162fe01f8ee4fa319484aad17071, type: 3}
       propertyPath: m_Name
-      value: Coin
+      value: CoinMedium
+      objectReference: {fileID: 0}
+    - target: {fileID: 2872573661611684796, guid: 9376162fe01f8ee4fa319484aad17071, type: 3}
+      propertyPath: m_TagString
+      value: CoinMedium
       objectReference: {fileID: 0}
     - target: {fileID: 6499365601087209497, guid: 9376162fe01f8ee4fa319484aad17071, type: 3}
       propertyPath: m_RootOrder
