@@ -13,8 +13,6 @@ public class LevelExit : MonoBehaviour
         {
             StartCoroutine(LoadNextLevel());
         }
-        
-
     }
 
     IEnumerator LoadNextLevel()
@@ -28,7 +26,7 @@ public class LevelExit : MonoBehaviour
         {
             nextSceneIndex = 0;
         }
-
+        FindObjectOfType<ScenePersist>().ResetScenePersist();
         SceneManager.LoadScene(nextSceneIndex);
     }
 }
